@@ -10,7 +10,8 @@ import {
   LayoutDashboard,
   FolderTree,
   ArrowRight,
-  Plus
+  Plus,
+  Globe,
 } from "lucide-react"
 
 const modules = [
@@ -28,12 +29,21 @@ export function Hero() {
     element?.scrollIntoView({ behavior: "smooth" })
   }
 
+  // Calculate module positions for different screen sizes
+  const getModulePosition = (index: number, screenSize: 'mobile' | 'tablet' | 'desktop') => {
+    const angle = (index / modules.length) * 2 * Math.PI - Math.PI / 2
+    const radius = screenSize === 'mobile' ? 120 : screenSize === 'tablet' ? 160 : 200
+    const x = Math.cos(angle) * radius
+    const y = Math.sin(angle) * radius
+    return { x, y }
+  }
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-background to-secondary/30 py-20 sm:py-32">
       <div className="container mx-auto px-4">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+        <div className="flex flex-col gap-12 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
           {/* Left Column: Copy */}
-          <div className="space-y-8">
+          <div className="space-y-8 text-center lg:text-left">
             <div className="space-y-4">
               <Badge variant="secondary" className="text-sm">
                 From £45/month
@@ -43,13 +53,13 @@ export function Hero() {
                 <span className="text-primary">Add What You Need.</span>{" "}
                 <span className="text-muted-foreground">When You Need It.</span>
               </h1>
-              <p className="text-lg text-muted-foreground sm:text-xl max-w-xl">
+              <p className="text-lg text-muted-foreground sm:text-xl mx-auto lg:mx-0 max-w-xl">
                 Subscribe to a professional website for <strong className="text-foreground">£45/month</strong>.
                 Add booking systems, member portals, AI chatbots, and more — only pay for what you need.
               </p>
             </div>
 
-            <div className="flex flex-col gap-4 sm:flex-row">
+            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
               <Button
                 size="lg"
                 onClick={() => scrollToSection("pricing")}
@@ -70,71 +80,104 @@ export function Hero() {
           </div>
 
           {/* Right Column: Modular Visualization */}
-          <div className="relative h-[500px] lg:h-[600px]">
+          <div className="relative h-[400px] sm:h-[500px] lg:h-[600px] flex items-center justify-center">
             {/* Base Website - Center */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
               <div className="relative">
-                {/* Connection lines */}
-                <div className="absolute inset-0">
-                  {modules.map((module, index) => (
-                    <div
-                      key={index}
-                      className="absolute w-full h-full"
-                    >
+                {/* Connection lines - hidden on small screens */}
+                <div className="absolute inset-0 hidden md:block">
+                  {modules.map((module, index) => {
+                    const desktopPos = getModulePosition(index, 'desktop')
+
+                    return (
                       <svg
-                        className="absolute top-0 left-0 w-full h-full"
+                        key={index}
+                        className="absolute top-0 left-0 w-full h-full pointer-events-none"
                         style={{ overflow: "visible" }}
                       >
                         <line
-                          x1="50%"
-                          y1="50%"
-                          x2={index % 3 === 0 ? "0%" : index % 3 === 1 ? "100%" : "50%"}
-                          y2={index < 3 ? "0%" : "100%"}
+                          x1="0"
+                          y1="0"
+                          x2={desktopPos.x}
+                          y2={desktopPos.y}
                           stroke="currentColor"
                           strokeWidth="2"
                           strokeDasharray="5,5"
-                          className="text-border opacity-50"
+                          className="text-border opacity-30"
                         />
                       </svg>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
 
-                {/* Base Card */}
-                <div className="bg-card border-4 border-primary rounded-2xl shadow-2xl p-8 w-64 h-64 flex flex-col items-center justify-center">
-                  <div className="text-6xl mb-4">🌐</div>
-                  <h3 className="text-xl font-bold text-center mb-2">Base Website</h3>
-                  <Badge className="text-base px-4 py-1">£45/month</Badge>
-                  <p className="text-sm text-muted-foreground text-center mt-4">
-                    Your foundation
-                  </p>
+                {/* Base Card - Made smaller */}
+                <div className="bg-card border-4 border-primary rounded-2xl shadow-2xl p-4 sm:p-6 w-32 h-32 sm:w-40 sm:h-40 flex flex-col items-center justify-center">
+                  <div className="bg-primary/10 rounded-full p-2 sm:p-3 mb-2">
+                    <Globe className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xs sm:text-sm font-bold text-center mb-1">Base Website</h3>
+                  <Badge className="text-xs px-2 py-0.5">£45/mo</Badge>
                 </div>
               </div>
             </div>
 
-            {/* Module Cards - Orbiting around base */}
+            {/* Module Cards - Orbiting around base with responsive radius */}
             {modules.map((module, index) => {
               const Icon = module.icon
-              const angle = (index / modules.length) * 2 * Math.PI - Math.PI / 2
-              const radius = 220
-              const x = Math.cos(angle) * radius
-              const y = Math.sin(angle) * radius
+              const mobilePos = getModulePosition(index, 'mobile')
+              const tabletPos = getModulePosition(index, 'tablet')
+              const desktopPos = getModulePosition(index, 'desktop')
 
               return (
-                <div
-                  key={module.name}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-transform hover:scale-105"
-                  style={{
-                    transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                  }}
-                >
-                  <div className="bg-card border-2 border-border rounded-xl shadow-lg p-4 w-40 hover:shadow-xl transition-shadow">
-                    <div className={`${module.color} rounded-lg p-3 mb-3 inline-flex`}>
-                      <Icon className="h-6 w-6" />
+                <div key={module.name} className="absolute top-1/2 left-1/2 transition-transform hover:scale-105">
+                  {/* Mobile positioning */}
+                  <div
+                    className="sm:hidden"
+                    style={{
+                      transform: `translate(calc(-50% + ${mobilePos.x}px), calc(-50% + ${mobilePos.y}px))`,
+                    }}
+                  >
+                    <div className="bg-card border-2 border-border rounded-xl shadow-lg p-2 w-24 hover:shadow-xl transition-shadow">
+                      <div className={`${module.color} rounded-lg p-1.5 mb-1 inline-flex`}>
+                        <Icon className="h-3 w-3" />
+                      </div>
+                      <h4 className="font-semibold text-xs leading-tight mb-0.5">{module.name}</h4>
+                      <p className="text-xs text-muted-foreground">{module.price}</p>
                     </div>
-                    <h4 className="font-semibold text-sm mb-1">{module.name}</h4>
-                    <p className="text-xs text-muted-foreground mb-2">{module.price}</p>
-                    <Plus className="h-4 w-4 text-muted-foreground" />
+                  </div>
+
+                  {/* Tablet positioning */}
+                  <div
+                    className="hidden sm:block lg:hidden"
+                    style={{
+                      transform: `translate(calc(-50% + ${tabletPos.x}px), calc(-50% + ${tabletPos.y}px))`,
+                    }}
+                  >
+                    <div className="bg-card border-2 border-border rounded-xl shadow-lg p-3 w-32 hover:shadow-xl transition-shadow">
+                      <div className={`${module.color} rounded-lg p-2 mb-2 inline-flex`}>
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <h4 className="font-semibold text-xs mb-1">{module.name}</h4>
+                      <p className="text-xs text-muted-foreground mb-1">{module.price}</p>
+                      <Plus className="h-3 w-3 text-muted-foreground" />
+                    </div>
+                  </div>
+
+                  {/* Desktop positioning */}
+                  <div
+                    className="hidden lg:block"
+                    style={{
+                      transform: `translate(calc(-50% + ${desktopPos.x}px), calc(-50% + ${desktopPos.y}px))`,
+                    }}
+                  >
+                    <div className="bg-card border-2 border-border rounded-xl shadow-lg p-4 w-40 hover:shadow-xl transition-shadow">
+                      <div className={`${module.color} rounded-lg p-3 mb-3 inline-flex`}>
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <h4 className="font-semibold text-sm mb-1">{module.name}</h4>
+                      <p className="text-xs text-muted-foreground mb-2">{module.price}</p>
+                      <Plus className="h-4 w-4 text-muted-foreground" />
+                    </div>
                   </div>
                 </div>
               )
