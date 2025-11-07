@@ -13,6 +13,7 @@ import {
   Plus,
   Globe,
 } from "lucide-react";
+import { motion, Variants } from "framer-motion";
 
 const modules = [
   {
@@ -59,6 +60,114 @@ const modules = [
   },
 ];
 
+// Animation variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const leftCopyVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.4, 0, 0.2, 1] as const, // easeOut cubic bezier
+    },
+  },
+};
+
+const baseCardVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      delay: 0.2,
+      ease: [0.4, 0, 0.2, 1] as const, // easeOut cubic bezier
+    },
+  },
+  hover: {
+    scale: 1.05,
+    transition: {
+      type: "spring" as const,
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
+const globePulseVariants: Variants = {
+  pulse: {
+    scale: [1, 1.1, 1],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: [0.4, 0, 0.6, 1] as const, // easeInOut cubic bezier
+    },
+  },
+};
+
+const lineVariants: Variants = {
+  hidden: { pathLength: 0, opacity: 0 },
+  visible: {
+    pathLength: 1,
+    opacity: 0.3,
+    transition: {
+      duration: 0.8,
+      delay: 0.4,
+      ease: [0.4, 0, 0.2, 1] as const, // easeOut cubic bezier
+    },
+  },
+};
+
+const moduleCardVariants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.8,
+  },
+  visible: (custom: { index: number }) => ({
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      delay: 0.6 + custom.index * 0.1,
+      ease: [0.4, 0, 0.2, 1] as const, // easeOut cubic bezier
+    },
+  }),
+};
+
+const moduleFloatVariants = {
+  float: (index: number) => ({
+    y: [0, -10, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: [0.4, 0, 0.6, 1] as const, // easeInOut cubic bezier
+      delay: index * 0.2,
+    },
+  }),
+};
+
+const moduleHoverVariants = {
+  hover: {
+    scale: 1.1,
+    y: -5,
+    transition: {
+      type: "spring" as const,
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
 export function Hero() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -83,7 +192,12 @@ export function Hero() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-12 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
           {/* Left Column: Copy */}
-          <div className="space-y-8 text-center lg:text-left">
+          <motion.div
+            className="space-y-8 text-center lg:text-left"
+            variants={leftCopyVariants}
+            initial="hidden"
+            animate="visible"
+          >
             <div className="space-y-4">
               <Badge variant="secondary" className="text-sm">
                 From £45/month
@@ -119,7 +233,7 @@ export function Hero() {
                 How It Works
               </Button>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Modular Visualization */}
           <div className="relative h-[400px] sm:h-[500px] lg:h-[600px] flex items-center justify-center">
@@ -127,17 +241,17 @@ export function Hero() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
               <div className="relative">
                 {/* Connection lines - hidden on small screens */}
-                <div className="absolute inset-0 hidden md:block">
-                  {modules.map((module, index) => {
-                    const desktopPos = getModulePosition(index, "desktop");
+                <div className="absolute inset-0 hidden md:block pointer-events-none">
+                  <svg
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                    style={{ overflow: "visible", width: "1px", height: "1px" }}
+                  >
+                    {modules.map((module, index) => {
+                      const desktopPos = getModulePosition(index, "desktop");
 
-                    return (
-                      <svg
-                        key={index}
-                        className="absolute top-0 left-0 w-full h-full pointer-events-none"
-                        style={{ overflow: "visible" }}
-                      >
-                        <line
+                      return (
+                        <motion.line
+                          key={index}
                           x1="0"
                           y1="0"
                           x2={desktopPos.x}
@@ -145,23 +259,36 @@ export function Hero() {
                           stroke="currentColor"
                           strokeWidth="2"
                           strokeDasharray="5,5"
-                          className="text-border opacity-30"
+                          className="text-border"
+                          variants={lineVariants}
+                          initial="hidden"
+                          animate="visible"
                         />
-                      </svg>
-                    );
-                  })}
+                      );
+                    })}
+                  </svg>
                 </div>
 
                 {/* Base Card */}
-                <div className="bg-card border-4 border-primary rounded-2xl shadow-2xl p-4 sm:p-6 w-32 h-32 sm:w-40 sm:h-40 flex flex-col items-center justify-center">
-                  <div className="bg-primary/10 rounded-full p-2 sm:p-3 mb-2">
+                <motion.div
+                  className="bg-card border-4 border-primary rounded-2xl shadow-2xl p-4 sm:p-6 w-32 h-32 sm:w-40 sm:h-40 flex flex-col items-center justify-center"
+                  variants={baseCardVariants}
+                  initial="hidden"
+                  animate="visible"
+                  whileHover="hover"
+                >
+                  <motion.div
+                    className="bg-primary/10 rounded-full p-2 sm:p-3 mb-2"
+                    variants={globePulseVariants}
+                    animate="pulse"
+                  >
                     <Globe className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
-                  </div>
+                  </motion.div>
                   <h3 className="text-xs sm:text-sm font-bold text-center mb-1">
                     Base Website
                   </h3>
                   <Badge className="text-xs px-2 py-0.5">£45/mo</Badge>
-                </div>
+                </motion.div>
               </div>
             </div>
 
@@ -173,76 +300,112 @@ export function Hero() {
               const desktopPos = getModulePosition(index, "desktop");
 
               return (
-                <div
-                  key={module.name}
-                  className="absolute top-1/2 left-1/2 transition-transform hover:scale-105"
-                >
+                <div key={module.name}>
                   {/* Mobile positioning */}
                   <div
-                    className="sm:hidden"
+                    className="absolute top-1/2 left-1/2 sm:hidden"
                     style={{
                       transform: `translate(calc(-50% + ${mobilePos.x}px), calc(-50% + ${mobilePos.y}px))`,
                     }}
                   >
-                    <div className="bg-card border-2 border-border rounded-xl shadow-lg p-2 w-24 hover:shadow-xl transition-shadow">
-                      <div
-                        className={`${module.color} rounded-lg p-1.5 mb-1 inline-flex`}
+                    <motion.div
+                      custom={{ index }}
+                      variants={moduleCardVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <motion.div
+                        className="bg-card border-2 border-border rounded-xl shadow-lg p-2 w-24 hover:shadow-xl transition-shadow"
+                        custom={index}
+                        variants={moduleFloatVariants}
+                        animate="float"
+                        whileHover={moduleHoverVariants.hover}
                       >
-                        <Icon className="h-3 w-3" />
-                      </div>
-                      <h4 className="font-semibold text-xs leading-tight mb-0.5">
-                        {module.name}
-                      </h4>
-                      <p className="text-xs text-muted-foreground">
-                        {module.price}
-                      </p>
-                    </div>
+                        <div
+                          className={`${module.color} rounded-lg p-1.5 mb-1 inline-flex`}
+                        >
+                          <Icon className="h-3 w-3" />
+                        </div>
+                        <h4 className="font-semibold text-xs leading-tight mb-0.5">
+                          {module.name}
+                        </h4>
+                        <p className="text-xs text-muted-foreground">
+                          {module.price}
+                        </p>
+                      </motion.div>
+                    </motion.div>
                   </div>
 
                   {/* Tablet positioning */}
                   <div
-                    className="hidden sm:block lg:hidden"
+                    className="absolute top-1/2 left-1/2 hidden sm:block lg:hidden"
                     style={{
                       transform: `translate(calc(-50% + ${tabletPos.x}px), calc(-50% + ${tabletPos.y}px))`,
                     }}
                   >
-                    <div className="bg-card border-2 border-border rounded-xl shadow-lg p-3 w-32 hover:shadow-xl transition-shadow">
-                      <div
-                        className={`${module.color} rounded-lg p-2 mb-2 inline-flex`}
+                    <motion.div
+                      custom={{ index }}
+                      variants={moduleCardVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <motion.div
+                        className="bg-card border-2 border-border rounded-xl shadow-lg p-3 w-32 hover:shadow-xl transition-shadow"
+                        custom={index}
+                        variants={moduleFloatVariants}
+                        animate="float"
+                        whileHover={moduleHoverVariants.hover}
                       >
-                        <Icon className="h-4 w-4" />
-                      </div>
-                      <h4 className="font-semibold text-xs mb-1">
-                        {module.name}
-                      </h4>
-                      <p className="text-xs text-muted-foreground mb-1">
-                        {module.price}
-                      </p>
-                      <Plus className="h-3 w-3 text-muted-foreground" />
-                    </div>
+                        <div
+                          className={`${module.color} rounded-lg p-2 mb-2 inline-flex`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </div>
+                        <h4 className="font-semibold text-xs mb-1">
+                          {module.name}
+                        </h4>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          {module.price}
+                        </p>
+                        <Plus className="h-3 w-3 text-muted-foreground" />
+                      </motion.div>
+                    </motion.div>
                   </div>
 
                   {/* Desktop positioning */}
                   <div
-                    className="hidden lg:block"
+                    className="absolute top-1/2 left-1/2 hidden lg:block"
                     style={{
                       transform: `translate(calc(-50% + ${desktopPos.x}px), calc(-50% + ${desktopPos.y}px))`,
                     }}
                   >
-                    <div className="bg-card border-2 border-border rounded-xl shadow-lg p-4 w-40 hover:shadow-xl transition-shadow">
-                      <div
-                        className={`${module.color} rounded-lg p-3 mb-3 inline-flex`}
+                    <motion.div
+                      custom={{ index }}
+                      variants={moduleCardVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
+                      <motion.div
+                        className="bg-card border-2 border-border rounded-xl shadow-lg p-4 w-40 hover:shadow-xl transition-shadow"
+                        custom={index}
+                        variants={moduleFloatVariants}
+                        animate="float"
+                        whileHover={moduleHoverVariants.hover}
                       >
-                        <Icon className="h-6 w-6" />
-                      </div>
-                      <h4 className="font-semibold text-sm mb-1">
-                        {module.name}
-                      </h4>
-                      <p className="text-xs text-muted-foreground mb-2">
-                        {module.price}
-                      </p>
-                      <Plus className="h-4 w-4 text-muted-foreground" />
-                    </div>
+                        <div
+                          className={`${module.color} rounded-lg p-3 mb-3 inline-flex`}
+                        >
+                          <Icon className="h-6 w-6" />
+                        </div>
+                        <h4 className="font-semibold text-sm mb-1">
+                          {module.name}
+                        </h4>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          {module.price}
+                        </p>
+                        <Plus className="h-4 w-4 text-muted-foreground" />
+                      </motion.div>
+                    </motion.div>
                   </div>
                 </div>
               );
