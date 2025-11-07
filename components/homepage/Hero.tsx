@@ -129,17 +129,13 @@ const lineVariants: Variants = {
 };
 
 const moduleCardVariants = {
-  hidden: (custom: { x: number; y: number }) => ({
+  hidden: {
     opacity: 0,
     scale: 0.8,
-    x: -custom.x,
-    y: -custom.y,
-  }),
-  visible: (custom: { x: number; y: number; index: number }) => ({
+  },
+  visible: (custom: { index: number }) => ({
     opacity: 1,
     scale: 1,
-    x: 0,
-    y: 0,
     transition: {
       duration: 0.6,
       delay: 0.6 + custom.index * 0.1,
@@ -245,17 +241,17 @@ export function Hero() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
               <div className="relative">
                 {/* Connection lines - hidden on small screens */}
-                <div className="absolute inset-0 hidden md:block">
-                  {modules.map((module, index) => {
-                    const desktopPos = getModulePosition(index, "desktop");
+                <div className="absolute inset-0 hidden md:block pointer-events-none">
+                  <svg
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                    style={{ overflow: "visible", width: "1px", height: "1px" }}
+                  >
+                    {modules.map((module, index) => {
+                      const desktopPos = getModulePosition(index, "desktop");
 
-                    return (
-                      <svg
-                        key={index}
-                        className="absolute top-0 left-0 w-full h-full pointer-events-none"
-                        style={{ overflow: "visible" }}
-                      >
+                      return (
                         <motion.line
+                          key={index}
                           x1="0"
                           y1="0"
                           x2={desktopPos.x}
@@ -268,9 +264,9 @@ export function Hero() {
                           initial="hidden"
                           animate="visible"
                         />
-                      </svg>
-                    );
-                  })}
+                      );
+                    })}
+                  </svg>
                 </div>
 
                 {/* Base Card */}
@@ -314,7 +310,7 @@ export function Hero() {
                     style={{
                       transform: `translate(calc(-50% + ${mobilePos.x}px), calc(-50% + ${mobilePos.y}px))`,
                     }}
-                    custom={{ x: mobilePos.x, y: mobilePos.y, index }}
+                    custom={{ index }}
                     variants={moduleCardVariants}
                     initial="hidden"
                     animate="visible"
@@ -346,7 +342,7 @@ export function Hero() {
                     style={{
                       transform: `translate(calc(-50% + ${tabletPos.x}px), calc(-50% + ${tabletPos.y}px))`,
                     }}
-                    custom={{ x: tabletPos.x, y: tabletPos.y, index }}
+                    custom={{ index }}
                     variants={moduleCardVariants}
                     initial="hidden"
                     animate="visible"
@@ -379,7 +375,7 @@ export function Hero() {
                     style={{
                       transform: `translate(calc(-50% + ${desktopPos.x}px), calc(-50% + ${desktopPos.y}px))`,
                     }}
-                    custom={{ x: desktopPos.x, y: desktopPos.y, index }}
+                    custom={{ index }}
                     variants={moduleCardVariants}
                     initial="hidden"
                     animate="visible"
