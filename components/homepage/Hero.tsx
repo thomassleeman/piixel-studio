@@ -300,107 +300,113 @@ export function Hero() {
               const desktopPos = getModulePosition(index, "desktop");
 
               return (
-                <div
-                  key={module.name}
-                  className="absolute top-1/2 left-1/2"
-                >
+                <div key={module.name}>
                   {/* Mobile positioning */}
-                  <motion.div
-                    className="sm:hidden"
+                  <div
+                    className="absolute top-1/2 left-1/2 sm:hidden"
                     style={{
                       transform: `translate(calc(-50% + ${mobilePos.x}px), calc(-50% + ${mobilePos.y}px))`,
                     }}
-                    custom={{ index }}
-                    variants={moduleCardVariants}
-                    initial="hidden"
-                    animate="visible"
                   >
                     <motion.div
-                      className="bg-card border-2 border-border rounded-xl shadow-lg p-2 w-24 hover:shadow-xl transition-shadow"
-                      custom={index}
-                      variants={moduleFloatVariants}
-                      animate="float"
-                      whileHover={moduleHoverVariants.hover}
+                      custom={{ index }}
+                      variants={moduleCardVariants}
+                      initial="hidden"
+                      animate="visible"
                     >
-                      <div
-                        className={`${module.color} rounded-lg p-1.5 mb-1 inline-flex`}
+                      <motion.div
+                        className="bg-card border-2 border-border rounded-xl shadow-lg p-2 w-24 hover:shadow-xl transition-shadow"
+                        custom={index}
+                        variants={moduleFloatVariants}
+                        animate="float"
+                        whileHover={moduleHoverVariants.hover}
                       >
-                        <Icon className="h-3 w-3" />
-                      </div>
-                      <h4 className="font-semibold text-xs leading-tight mb-0.5">
-                        {module.name}
-                      </h4>
-                      <p className="text-xs text-muted-foreground">
-                        {module.price}
-                      </p>
+                        <div
+                          className={`${module.color} rounded-lg p-1.5 mb-1 inline-flex`}
+                        >
+                          <Icon className="h-3 w-3" />
+                        </div>
+                        <h4 className="font-semibold text-xs leading-tight mb-0.5">
+                          {module.name}
+                        </h4>
+                        <p className="text-xs text-muted-foreground">
+                          {module.price}
+                        </p>
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
+                  </div>
 
                   {/* Tablet positioning */}
-                  <motion.div
-                    className="hidden sm:block lg:hidden"
+                  <div
+                    className="absolute top-1/2 left-1/2 hidden sm:block lg:hidden"
                     style={{
                       transform: `translate(calc(-50% + ${tabletPos.x}px), calc(-50% + ${tabletPos.y}px))`,
                     }}
-                    custom={{ index }}
-                    variants={moduleCardVariants}
-                    initial="hidden"
-                    animate="visible"
                   >
                     <motion.div
-                      className="bg-card border-2 border-border rounded-xl shadow-lg p-3 w-32 hover:shadow-xl transition-shadow"
-                      custom={index}
-                      variants={moduleFloatVariants}
-                      animate="float"
-                      whileHover={moduleHoverVariants.hover}
+                      custom={{ index }}
+                      variants={moduleCardVariants}
+                      initial="hidden"
+                      animate="visible"
                     >
-                      <div
-                        className={`${module.color} rounded-lg p-2 mb-2 inline-flex`}
+                      <motion.div
+                        className="bg-card border-2 border-border rounded-xl shadow-lg p-3 w-32 hover:shadow-xl transition-shadow"
+                        custom={index}
+                        variants={moduleFloatVariants}
+                        animate="float"
+                        whileHover={moduleHoverVariants.hover}
                       >
-                        <Icon className="h-4 w-4" />
-                      </div>
-                      <h4 className="font-semibold text-xs mb-1">
-                        {module.name}
-                      </h4>
-                      <p className="text-xs text-muted-foreground mb-1">
-                        {module.price}
-                      </p>
-                      <Plus className="h-3 w-3 text-muted-foreground" />
+                        <div
+                          className={`${module.color} rounded-lg p-2 mb-2 inline-flex`}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </div>
+                        <h4 className="font-semibold text-xs mb-1">
+                          {module.name}
+                        </h4>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          {module.price}
+                        </p>
+                        <Plus className="h-3 w-3 text-muted-foreground" />
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
+                  </div>
 
                   {/* Desktop positioning */}
-                  <motion.div
-                    className="hidden lg:block"
+                  <div
+                    className="absolute top-1/2 left-1/2 hidden lg:block"
                     style={{
                       transform: `translate(calc(-50% + ${desktopPos.x}px), calc(-50% + ${desktopPos.y}px))`,
                     }}
-                    custom={{ index }}
-                    variants={moduleCardVariants}
-                    initial="hidden"
-                    animate="visible"
                   >
                     <motion.div
-                      className="bg-card border-2 border-border rounded-xl shadow-lg p-4 w-40 hover:shadow-xl transition-shadow"
-                      custom={index}
-                      variants={moduleFloatVariants}
-                      animate="float"
-                      whileHover={moduleHoverVariants.hover}
+                      custom={{ index }}
+                      variants={moduleCardVariants}
+                      initial="hidden"
+                      animate="visible"
                     >
-                      <div
-                        className={`${module.color} rounded-lg p-3 mb-3 inline-flex`}
+                      <motion.div
+                        className="bg-card border-2 border-border rounded-xl shadow-lg p-4 w-40 hover:shadow-xl transition-shadow"
+                        custom={index}
+                        variants={moduleFloatVariants}
+                        animate="float"
+                        whileHover={moduleHoverVariants.hover}
                       >
-                        <Icon className="h-6 w-6" />
-                      </div>
-                      <h4 className="font-semibold text-sm mb-1">
-                        {module.name}
-                      </h4>
-                      <p className="text-xs text-muted-foreground mb-2">
-                        {module.price}
-                      </p>
-                      <Plus className="h-4 w-4 text-muted-foreground" />
+                        <div
+                          className={`${module.color} rounded-lg p-3 mb-3 inline-flex`}
+                        >
+                          <Icon className="h-6 w-6" />
+                        </div>
+                        <h4 className="font-semibold text-sm mb-1">
+                          {module.name}
+                        </h4>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          {module.price}
+                        </p>
+                        <Plus className="h-4 w-4 text-muted-foreground" />
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
+                  </div>
                 </div>
               );
             })}
