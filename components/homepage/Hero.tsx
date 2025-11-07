@@ -1,42 +1,82 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Users,
   Bot,
   FileText,
   Calendar,
   LayoutDashboard,
-  FolderTree,
+  ShoppingCart,
   ArrowRight,
   Plus,
   Globe,
-} from "lucide-react"
+} from "lucide-react";
 
 const modules = [
-  { name: "Member Portal", price: "£25/mo", icon: Users, color: "bg-blue-100 text-blue-600", position: "top-0 left-0" },
-  { name: "AI Chatbot", price: "£35/mo", icon: Bot, color: "bg-purple-100 text-purple-600", position: "top-0 right-0" },
-  { name: "Smart Forms", price: "£20/mo", icon: FileText, color: "bg-green-100 text-green-600", position: "bottom-0 left-0" },
-  { name: "Booking System", price: "£40/mo", icon: Calendar, color: "bg-orange-100 text-orange-600", position: "top-1/2 -translate-y-1/2 right-0" },
-  { name: "Client Dashboard", price: "£60/mo", icon: LayoutDashboard, color: "bg-pink-100 text-pink-600", position: "bottom-0 right-0" },
-  { name: "Directory", price: "£50/mo", icon: FolderTree, color: "bg-cyan-100 text-cyan-600", position: "top-1/2 -translate-y-1/2 left-0" },
-]
+  {
+    name: "Member Portal",
+    price: "£25/mo",
+    icon: Users,
+    color: "bg-blue-100 text-blue-600",
+    position: "top-0 left-0",
+  },
+  {
+    name: "AI Assistant",
+    price: "£35/mo",
+    icon: Bot,
+    color: "bg-purple-100 text-purple-600",
+    position: "top-0 right-0",
+  },
+  {
+    name: "Smart Forms",
+    price: "£20/mo",
+    icon: FileText,
+    color: "bg-green-100 text-green-600",
+    position: "bottom-0 left-0",
+  },
+  {
+    name: "Booking System",
+    price: "£40/mo",
+    icon: Calendar,
+    color: "bg-orange-100 text-orange-600",
+    position: "top-1/2 -translate-y-1/2 right-0",
+  },
+  {
+    name: "Client Dashboard",
+    price: "£60/mo",
+    icon: LayoutDashboard,
+    color: "bg-pink-100 text-pink-600",
+    position: "bottom-0 right-0",
+  },
+  {
+    name: "eCommerce",
+    price: "£50/mo",
+    icon: ShoppingCart,
+    color: "bg-cyan-100 text-cyan-600",
+    position: "top-1/2 -translate-y-1/2 left-0",
+  },
+];
 
 export function Hero() {
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    element?.scrollIntoView({ behavior: "smooth" })
-  }
+    const element = document.getElementById(sectionId);
+    element?.scrollIntoView({ behavior: "smooth" });
+  };
 
   // Calculate module positions for different screen sizes
-  const getModulePosition = (index: number, screenSize: 'mobile' | 'tablet' | 'desktop') => {
-    const angle = (index / modules.length) * 2 * Math.PI - Math.PI / 2
-    const radius = screenSize === 'mobile' ? 120 : screenSize === 'tablet' ? 160 : 200
-    const x = Math.cos(angle) * radius
-    const y = Math.sin(angle) * radius
-    return { x, y }
-  }
+  const getModulePosition = (
+    index: number,
+    screenSize: "mobile" | "tablet" | "desktop"
+  ) => {
+    const angle = (index / modules.length) * 2 * Math.PI - Math.PI / 2;
+    const radius =
+      screenSize === "mobile" ? 120 : screenSize === "tablet" ? 160 : 200;
+    const x = Math.cos(angle) * radius;
+    const y = Math.sin(angle) * radius;
+    return { x, y };
+  };
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-background to-secondary/30 py-20 sm:py-32">
@@ -54,8 +94,10 @@ export function Hero() {
                 <span className="text-muted-foreground">When You Need It.</span>
               </h1>
               <p className="text-lg text-muted-foreground sm:text-xl mx-auto lg:mx-0 max-w-xl">
-                Subscribe to a professional website for <strong className="text-foreground">£45/month</strong>.
-                Add booking systems, member portals, AI chatbots, and more — only pay for what you need.
+                Subscribe to a professional website for{" "}
+                <strong className="text-foreground">£45/month</strong>. Add
+                booking systems, member portals, AI chatbots, and more — only
+                pay for what you need.
               </p>
             </div>
 
@@ -87,7 +129,7 @@ export function Hero() {
                 {/* Connection lines - hidden on small screens */}
                 <div className="absolute inset-0 hidden md:block">
                   {modules.map((module, index) => {
-                    const desktopPos = getModulePosition(index, 'desktop')
+                    const desktopPos = getModulePosition(index, "desktop");
 
                     return (
                       <svg
@@ -106,16 +148,18 @@ export function Hero() {
                           className="text-border opacity-30"
                         />
                       </svg>
-                    )
+                    );
                   })}
                 </div>
 
-                {/* Base Card - Made smaller */}
+                {/* Base Card */}
                 <div className="bg-card border-4 border-primary rounded-2xl shadow-2xl p-4 sm:p-6 w-32 h-32 sm:w-40 sm:h-40 flex flex-col items-center justify-center">
                   <div className="bg-primary/10 rounded-full p-2 sm:p-3 mb-2">
                     <Globe className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
                   </div>
-                  <h3 className="text-xs sm:text-sm font-bold text-center mb-1">Base Website</h3>
+                  <h3 className="text-xs sm:text-sm font-bold text-center mb-1">
+                    Base Website
+                  </h3>
                   <Badge className="text-xs px-2 py-0.5">£45/mo</Badge>
                 </div>
               </div>
@@ -123,13 +167,16 @@ export function Hero() {
 
             {/* Module Cards - Orbiting around base with responsive radius */}
             {modules.map((module, index) => {
-              const Icon = module.icon
-              const mobilePos = getModulePosition(index, 'mobile')
-              const tabletPos = getModulePosition(index, 'tablet')
-              const desktopPos = getModulePosition(index, 'desktop')
+              const Icon = module.icon;
+              const mobilePos = getModulePosition(index, "mobile");
+              const tabletPos = getModulePosition(index, "tablet");
+              const desktopPos = getModulePosition(index, "desktop");
 
               return (
-                <div key={module.name} className="absolute top-1/2 left-1/2 transition-transform hover:scale-105">
+                <div
+                  key={module.name}
+                  className="absolute top-1/2 left-1/2 transition-transform hover:scale-105"
+                >
                   {/* Mobile positioning */}
                   <div
                     className="sm:hidden"
@@ -138,11 +185,17 @@ export function Hero() {
                     }}
                   >
                     <div className="bg-card border-2 border-border rounded-xl shadow-lg p-2 w-24 hover:shadow-xl transition-shadow">
-                      <div className={`${module.color} rounded-lg p-1.5 mb-1 inline-flex`}>
+                      <div
+                        className={`${module.color} rounded-lg p-1.5 mb-1 inline-flex`}
+                      >
                         <Icon className="h-3 w-3" />
                       </div>
-                      <h4 className="font-semibold text-xs leading-tight mb-0.5">{module.name}</h4>
-                      <p className="text-xs text-muted-foreground">{module.price}</p>
+                      <h4 className="font-semibold text-xs leading-tight mb-0.5">
+                        {module.name}
+                      </h4>
+                      <p className="text-xs text-muted-foreground">
+                        {module.price}
+                      </p>
                     </div>
                   </div>
 
@@ -154,11 +207,17 @@ export function Hero() {
                     }}
                   >
                     <div className="bg-card border-2 border-border rounded-xl shadow-lg p-3 w-32 hover:shadow-xl transition-shadow">
-                      <div className={`${module.color} rounded-lg p-2 mb-2 inline-flex`}>
+                      <div
+                        className={`${module.color} rounded-lg p-2 mb-2 inline-flex`}
+                      >
                         <Icon className="h-4 w-4" />
                       </div>
-                      <h4 className="font-semibold text-xs mb-1">{module.name}</h4>
-                      <p className="text-xs text-muted-foreground mb-1">{module.price}</p>
+                      <h4 className="font-semibold text-xs mb-1">
+                        {module.name}
+                      </h4>
+                      <p className="text-xs text-muted-foreground mb-1">
+                        {module.price}
+                      </p>
                       <Plus className="h-3 w-3 text-muted-foreground" />
                     </div>
                   </div>
@@ -171,20 +230,26 @@ export function Hero() {
                     }}
                   >
                     <div className="bg-card border-2 border-border rounded-xl shadow-lg p-4 w-40 hover:shadow-xl transition-shadow">
-                      <div className={`${module.color} rounded-lg p-3 mb-3 inline-flex`}>
+                      <div
+                        className={`${module.color} rounded-lg p-3 mb-3 inline-flex`}
+                      >
                         <Icon className="h-6 w-6" />
                       </div>
-                      <h4 className="font-semibold text-sm mb-1">{module.name}</h4>
-                      <p className="text-xs text-muted-foreground mb-2">{module.price}</p>
+                      <h4 className="font-semibold text-sm mb-1">
+                        {module.name}
+                      </h4>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        {module.price}
+                      </p>
                       <Plus className="h-4 w-4 text-muted-foreground" />
                     </div>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
