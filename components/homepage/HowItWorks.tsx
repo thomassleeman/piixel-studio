@@ -1,29 +1,44 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Globe, Plus, TrendingUp } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card";
+import { Globe, Plus, TrendingUp } from "lucide-react";
 
 const steps = [
   {
     number: "1",
     icon: Globe,
-    title: "Choose Your Base",
-    description: "Subscribe to a professional website for £45/month",
-    features: ["Custom domain", "Content management system", "Hosting & maintenance", "1 hour developer time/month"],
+    title: "Start with a template",
+    description: "Subscribe to a professional website for £19/month",
+    features: [
+      "Custom domain",
+      "Content management system",
+      "Hosting & maintenance",
+      "1 hour developer time/month",
+    ],
   },
   {
     number: "2",
     icon: Plus,
-    title: "Add What You Need",
+    title: "Add The Functionality You Need",
     description: "Select modules that fit your business",
-    features: ["No complex setup", "We build them for you", "Only pay for what you use", "Add or remove anytime"],
+    features: [
+      "No complex setup",
+      "We build them for you",
+      "Only pay for what you use",
+      "Add or remove anytime",
+    ],
   },
   {
     number: "3",
     icon: TrendingUp,
     title: "Grow Over Time",
     description: "Add features as your business grows",
-    features: ["Cancel or modify anytime", "No long-term contracts", "Scale up or down", "Always in control"],
+    features: [
+      "Cancel or modify anytime",
+      "No long-term contracts",
+      "Scale up or down",
+      "Always in control",
+    ],
   },
-]
+];
 
 export function HowItWorks() {
   return (
@@ -40,7 +55,7 @@ export function HowItWorks() {
 
         <div className="grid gap-8 md:grid-cols-3">
           {steps.map((step, index) => {
-            const Icon = step.icon
+            const Icon = step.icon;
             return (
               <div key={step.number} className="relative">
                 {/* Connector line */}
@@ -63,7 +78,9 @@ export function HowItWorks() {
 
                       {/* Content */}
                       <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                      <p className="text-muted-foreground mb-6">{step.description}</p>
+                      <p className="text-muted-foreground mb-6">
+                        {step.description}
+                      </p>
 
                       {/* Features list */}
                       <ul className="space-y-2 text-sm text-left w-full">
@@ -78,10 +95,10 @@ export function HowItWorks() {
                   </CardContent>
                 </Card>
               </div>
-            )
+            );
           })}
         </div>
       </div>
     </section>
-  )
+  );
 }
